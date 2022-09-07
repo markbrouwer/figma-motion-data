@@ -1,0 +1,11 @@
+{
+  "name": "extract-motion-data",
+  "id": "1149329498470390974",
+  "api": "1.0.0",
+  "main": "code.js",
+  "editorType": [
+    "figma",
+    "figjam"
+  ],
+  "ui": "ui.html"
+}

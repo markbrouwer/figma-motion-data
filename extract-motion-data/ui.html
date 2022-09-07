@@ -1,0 +1,71 @@
+<h2>Extract Motion Data to JSON</h2>
+<button id="getMotionCurves">Export Motion Curves to JSON</button> 
+
+
+<!-- <div>
+  <h4> Apply Prototype Transition</h4>
+  <div class="rowStyle">
+    <span>Start Frame : </span>
+    <span id="transitionSelection1"> no selection</span>
+  </div>
+
+  <div class="rowStyle">
+    <span>Destination Frame : </span>
+    <span id="transitionSelection2"> no selection</span>
+  </div>
+
+  <button id="applyMotionCurves">Use transition from Frame 1 to Frame 2</button>
+</div> -->
+
+
+<button id="close" style="right: 10; bottom: 10; position: absolute">Close</button>
+
+
+
+<script>
+  document.getElementById('getMotionCurves').onclick = () => {
+    parent.postMessage({ pluginMessage: { type: 'getMotionCurves' } }, '*')
+  }
+
+  var selectionCounter = 0;
+  onmessage = (event) => {
+    console.log('event : ', event)
+    //console.log("got this from the plugin code", event.data.pluginMessage)
+    if(event.data.pluginMessage[1] === 'jsonMotionFileExport'){
+      const msg = event.data.pluginMessage[0];
+        download(
+          JSON.stringify(msg, null, 4),
+          "motionCurves.json",
+          "application/json"
+      );
+    }
+
+    if(event.data.pluginMessage[1] === 'selectionData'){
+      console.log('CURRENT SELECTION  ==== ', event.data.pluginMessage)
+      const textVar = event.data.pluginMessage[2];
+      const frameId = event.data.pluginMessage[0];
+      // console.log('Frame ID : ',  frameId);
+      // if(selectionCounter === 0) {
+      //   document.getElementById('transitionSelection1').innerHTML = textVar;
+      //   selectionCounter = selectionCounter + 1; 
+      // }else{
+      //   document.getElementById('transitionSelection2').innerHTML = textVar;
+      //   selectionCounter = 0;
+      // }
+    }
+  }
+
+  function download(content, fileName, contentType) {
+      var a = document.createElement("a");
+      var file = new Blob([content], { type: contentType });
+      a.href = URL.createObjectURL(file);
+      a.download = fileName;
+      a.click();
+  }
+
+</script>
+
+
+<style>
+  .rowStyle { display: flex; flex-direction: row; justify-content: space-around }
+</style>
